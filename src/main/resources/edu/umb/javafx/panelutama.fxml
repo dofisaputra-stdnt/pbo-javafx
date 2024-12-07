@@ -74,12 +74,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Slider fx:id="slideTemp" layoutX="86.0" layoutY="142.0" onDragDetected="#detectTemp" />
-            <Text fx:id="txValue" layoutX="251.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
+            <Slider fx:id="slideTemp" layoutX="86.0" layoutY="142.0" />
             <Separator layoutX="29.0" layoutY="186.0" prefHeight="0.0" prefWidth="507.0" />
             <RadioButton fx:id="rdrCelcius" layoutX="50.0" layoutY="208.0" mnemonicParsing="false" text="Celcius">
                <font>

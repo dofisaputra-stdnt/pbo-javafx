@@ -2,13 +2,8 @@ package edu.umb.javafx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 public class MainController {
 
@@ -67,17 +62,21 @@ public class MainController {
     private Slider slideTemp;
 
     @FXML
-    private Text txValue;
-
-    @FXML
     void calculateTemp(ActionEvent event) {
+        double temp = Double.parseDouble(inputTemp.getText());
+        double result = 0;
 
-    }
+        if (rdrCelcius.isSelected()) {
+            result = temp;
+        } else if (rdrFahrenheit.isSelected()) {
+            result = (temp * 9 / 5) + 32;
+        } else if (rdrKelvin.isSelected()) {
+            result = temp + 273.15;
+        } else if (rdrReamur.isSelected()) {
+            result = temp * 4 / 5;
+        }
 
-    @FXML
-    void detectTemp(MouseEvent event) {
-        // change the value of the text based on the slider value from 0 to 100
-        txValue.setText(String.valueOf(slideTemp.getValue()));
+        outputTemp.setText(String.valueOf(result));
     }
 
     @FXML
@@ -117,6 +116,45 @@ public class MainController {
     void visiblePanelRedGreen(ActionEvent event) {
         panelRed.setVisible(false);
         panelGreen.setVisible(false);
+    }
+
+    @FXML
+    void initialize() {
+        detectTemp();
+        detectInputTemp();
+
+        ToggleGroup tempGroup = new ToggleGroup();
+        rdrCelcius.setToggleGroup(tempGroup);
+        rdrFahrenheit.setToggleGroup(tempGroup);
+        rdrKelvin.setToggleGroup(tempGroup);
+        rdrReamur.setToggleGroup(tempGroup);
+
+        rdrCelcius.setSelected(true);
+    }
+
+    void detectTemp() {
+        slideTemp.setMin(-100);
+        slideTemp.setMax(100);
+        slideTemp.setValue(0);
+        inputTemp.setText("0");
+
+        slideTemp.valueProperty().addListener((observable, oldValue, newValue) -> {
+            inputTemp.setText(String.valueOf(newValue.intValue()));
+        });
+    }
+
+    void detectInputTemp() {
+        inputTemp.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                System.out.println(newValue);
+                try {
+                    inputTemp.setStyle("-fx-border-color: none;");
+                    slideTemp.setValue(Double.parseDouble(newValue));
+                } catch (NumberFormatException e) {
+                    inputTemp.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+                }
+            }
+        });
     }
 
 }
